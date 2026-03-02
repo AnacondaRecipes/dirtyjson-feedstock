@@ -1,0 +1,58 @@
+{% set name = "dirtyjson" %}
+{% set version = "1.0.8" %}
+
+
+package:
+  name: {{ name|lower }}
+  version: {{ version }}
+
+source:
+  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/dirtyjson-{{ version }}.tar.gz
+  sha256: 90ca4a18f3ff30ce849d100dcf4a003953c79d3a2348ef056f1d9c22231a25fd
+
+build:
+  skip: true # [py<310]
+  number: 0
+  script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
+
+requirements:
+  host:
+    - python
+    - setuptools
+    - pip
+  run:
+    - python
+
+test:
+  imports:
+    - dirtyjson
+  commands:
+    - pip check
+  requires:
+    - pip
+    - python
+
+about:
+  home: https://github.com/codecobblers/dirtyjson
+  summary: JSON decoder for Python that can extract data from the muck
+  description: |
+    dirtyjson is a JSON decoder meant for extracting JSON-type data from .js
+    files. The returned data structure includes information about line and
+    column numbers, so you can output more useful error messages. The input
+    can also include single quotes, line comments, inline comments, dangling
+    commas, unquoted single-word keys, and hexadecimal and octal numbers.
+
+    The goal of dirtyjson is to read JSON objects out of files that are
+    littered with elements that do not fit the official JSON standard. By
+    providing line and column number contexts, a dirty JSON file can be used
+    as source input for a complex data parser or compiler.
+  license: Apache-2.0
+  license_file: LICENSE.txt
+  license_family: APACHE
+  doc_url: https://github.com/codecobblers/dirtyjson
+  dev_url: https://github.com/codecobblers/dirtyjson
+  
+
+extra:
+  recipe-maintainers:
+    - pavelzw
